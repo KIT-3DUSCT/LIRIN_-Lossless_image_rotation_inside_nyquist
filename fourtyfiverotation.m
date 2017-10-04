@@ -7,7 +7,16 @@ standardintp=0;
     interpmethode =  'linear'; %'spline'; %'nearest' % 
     
 %data
-if 0 uiopen('C:\Users\gi2570\Desktop\40_by_40_thumbnail_of_''Green_Sea_Shell''.png',1)
+if 0 
+    uiopen('C:\Users\gi2570\Desktop\40_by_40_thumbnail_of_''Green_Sea_Shell''.png',1)
+else
+    uiopen('./160_by_160_thumbnail_of_''Green_Sea_Shell''.png',1);
+end
+
+try
+  Green_Sea_Shell_160=x160_by_160_thumbnail_of_0x27Green_Sea_Shell0x27;
+catch
+   Green_Sea_Shell_160= x40_by_40_thumbnail_of_0x27Green_Sea_Shell0x27;
 end
 
 gss_org=(sum(double(Green_Sea_Shell_160(:,:,:)),3));
@@ -101,8 +110,16 @@ else %%try 2
         
         %reduce again to high freQ!
         if 1 %mod(iteration,2)
-            gss_pi=interpft(interpft(gss_p,2*size(gss_p,1),1),2*size(gss_p,1),2);
-            siz=max(size(gss_p));
+            
+             if standardintp
+                    [x,y] = meshgrid(1:size(gss_p,1),1:size(gss_p,1));
+                    [xn,yn] = meshgrid(linspace(1,size(gss_p,1),2*size(gss_p,1)),linspace(1,size(gss_p,1),2*size(gss_p,1)));
+                    gss_pi=interp2(x,y,gss_p,xn,yn,interpmethode);
+                    siz=max(size(gss_p));
+             else
+                 gss_pi=interpft(interpft(gss_p,2*size(gss_p,1),1),2*size(gss_p,1),2);
+                 siz=max(size(gss_p));
+             end
             %if iteration==1
             %    siz=siz*2;       
             %end
@@ -196,13 +213,13 @@ else %%try 2
         %figure(7); imagesc(fftshift(((gss(:,:)))))
         
         % figure(4); imagesc(log(abs((gss)))./2);
-        SUBPLOT(2,2,2),
+        subplot(2,2,2),
           figure(4);
         imagesc(((gss))); title(['roation number ' num2str(iteration)]); colorbar;
         %figure(4); imagesc(fftshift(log(abs(fft2(gss)))));
         %gss=gss(1:siz/2,1:siz/2);
         %figure(5);imagesc(gss(1:2:end,1:2:end)); colorbar; drawnow;
-        SUBPLOT(2,2,1),
+        subplot(2,2,1),
         imagesc(gss_org);colorbar; title('original image')
         
         if mod(iteration,8)==0
@@ -210,11 +227,11 @@ else %%try 2
             %    gss=gss.*(max(gss_org(:))/max(gss(:)));
             gss_t=gss(siz/4+1:siz*3/4,siz/4+1:siz*3/4);
             % gss_t=gss_t(2:2:end,2:2:end);
-            SUBPLOT(2,2,4),
+            subplot(2,2,4),
             errorl=[errorl sum(sum(abs(gss_t(1:1:end,1:1:end)-gss_org)))];
             plot(errorl); title(['mean error in percent to mean value' num2str(100.*mean(mean(abs(gss_t(1:1:end,1:1:end)-gss_org)))/mean(gss_org(:)))]);
 
-            SUBPLOT(2,2,3),
+            subplot(2,2,3),
             imagesc(gss_t(1:1:end,1:1:end)-gss_org); colorbar; title('difference image')
            drawnow;
         end

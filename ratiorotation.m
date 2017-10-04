@@ -1,15 +1,20 @@
 %%%lossless "ratio" rotation MZ 2016
 
 %data
+try 
 if 1
     uiopen('C:\Users\gi2570\Desktop\40_by_40_thumbnail_of_''Green_Sea_Shell''.png',1)
 end
+catch
+     uiopen('.\40_by_40_thumbnail_of_''Green_Sea_Shell''.png',1)
+end
+Green_Sea_Shell=x40_by_40_thumbnail_of_0x27Green_Sea_Shell0x27;
 
 gss_org=(sum(double(Green_Sea_Shell(:,:,:)),3));
 gss_org=interpft(interpft(gss_org,60,1),60,2);
 gss_org=padarray(gss_org,[2 2], 0 ,'both'); %mean(gss_org(:)) ,'both'); %double
 
-    ratio=3;
+    ratio=2;
     degree=atand(1/ratio); %atand(1/2); %22.5; % %
     
     hyp=1/(1/cosd(degree));
@@ -49,7 +54,14 @@ tic,
 standardintp=0;
     interpmethode =  'linear'; %'spline'; %'nearest' % 
     
-
+try
+if 1
+    uiopen('C:\Users\gi2570\Desktop\160_by_160_thumbnail_of_''Green_Sea_Shell''.png',1)
+end
+catch
+     uiopen('.\160_by_160_thumbnail_of_''Green_Sea_Shell''.png',1)
+end
+Green_Sea_Shell_160=x160_by_160_thumbnail_of_0x27Green_Sea_Shell0x27;
 
 gss_org=(sum(double(Green_Sea_Shell_160(:,:,:)),3));
 gss_org=interpft(interpft(gss_org,1*max(size(gss_org)),1),1*max(size(gss_org)),2);
